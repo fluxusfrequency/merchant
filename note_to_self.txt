@@ -1,2 +1,4 @@
 Download styles.css and add to app/assets/stylesheets
 Download products.zip and add to app/assets/images/products
+Fix print_stock method in products_helper.rb using content tag method
+Finish adding validates for stock in product.rb
