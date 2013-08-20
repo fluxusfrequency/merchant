@@ -1,0 +1,2 @@
+Download styles.css and add to app/assets/stylesheets
+Download products.zip and add to app/assets/images/products
