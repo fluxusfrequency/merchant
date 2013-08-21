@@ -22,4 +22,7 @@
   <div class="actions">
     <%= f.submit %>
   </div>
+  <div class="field">
+    <p>Item Count: <%= @order.order_items.count %></p>
+  </div>
 <% end %>
