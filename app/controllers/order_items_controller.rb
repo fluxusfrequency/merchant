@@ -1,4 +1,5 @@
 class OrderItemsController < ApplicationController
+  before_filter :load_order, only: :create
   # GET /order_items
   # GET /order_items.json
   def index
@@ -40,11 +41,11 @@ class OrderItemsController < ApplicationController
   # POST /order_items
   # POST /order_items.json
   def create
-    @order_item = OrderItem.new(order_item_params)
+    @order_item = OrderItem.new(product_id: params[:product_id], order_id: @order.id)
 
     respond_to do |format|
       if @order_item.save
-        format.html { redirect_to @order_item, notice: 'Order item was successfully created.' }
+        format.html { redirect_to @order, notice: 'Order item was successfully created.' }
         format.json { render json: @order_item, status: :created, location: @order_item }
       else
         format.html { render action: "new" }
@@ -82,7 +83,14 @@ class OrderItemsController < ApplicationController
   end
 
   private
-
+    def load_order
+      begin
+        @order = Order.find(session[:order_id])
+      rescue ActiveRecord::RecordNotFound
+        @order = Order.create(status: "unsubmitted")
+        session[:order_id] = @order.id
+      end
+    end
     # Use this method to whitelist the permissible parameters. Example:
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.

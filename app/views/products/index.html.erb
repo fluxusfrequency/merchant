@@ -7,6 +7,7 @@
     <th>Price</th>
     <th>Stock</th>
     <th>View</th>
+    <th>Buy</th>
     <th></th>
     <th></th>
     <th></th>
@@ -18,7 +19,8 @@
     <td><span class="product_title"><%= product.title %></span><%= product.description %></td>
     <td><%= print_price(product.price) %></td>
     <td><%= print_stock(product.stock) %></td>
-    <td><%= link_to product_path(product.id) %>
+    <td><%= link_to product_path(product.id) %></td>
+    <td><%= button_to "Add to Cart", order_items_path(product_id: product.id) %></td>
     <td><%= link_to 'Show', product %></td>
     <td><%= link_to 'Edit', edit_product_path(product) %></td>
     <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
