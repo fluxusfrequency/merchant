@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery with: :exception
   helper_method :current_user
 
   private
   def load_order
     @order = Order.find_or_initialize_by_id(session[:order_id],
-                                              status: "unsubmitted", user_id: session[:user_id])
+                                              user_id: session[:user_id], status: "unsubmitted")
     if @order.new_record?
       @order.save!
       session[:order_id] = @order.id

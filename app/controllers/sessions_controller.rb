@@ -12,11 +12,5 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
     session[:order_id] = nil
     redirect_to root_path, notice: "Goodbye!"
-  end
-
-  private
-
-  def session_params
-      params.require(:session).permit(:status, :user_id)
-    end
+ end
 end

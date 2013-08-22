@@ -1,6 +1,9 @@
 class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
+
+  before_filter :set_order, only: [:show, :edit, :update, :destroy, :confirm]
+
   def index
     @orders = Order.all
 
@@ -13,12 +16,6 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @order = Order.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @order }
-    end
   end
 
   # GET /orders/new
@@ -34,13 +31,12 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    @order = Order.find(params[:id])
   end
 
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(params[:id])
+    @order = Order.new(order_params)
 
     respond_to do |format|
       if @order.save
@@ -56,12 +52,11 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    @order = Order.find(params[:id])
-
     respond_to do |format|
-      if @order.update_attributes(params[:id])
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+      if @order.update_attributes(order_params.merge(status: 'submitted'))
+        format.html { redirect_to confirm_order_path(@order), notice: 'Order was successfully updated.' }
         format.json { head :no_content }
+
       else
         format.html { render action: "edit" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -72,7 +67,6 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
-    @order = Order.find(params[:id])
     @order.destroy
 
     respond_to do |format|
@@ -85,12 +79,17 @@ class OrdersController < ApplicationController
     @order.destory
   end
 
-  private
+  def confirm
+  end
 
+  private
+    def set_order
+      @order = Order.find(params[:id])
+    end
     # Use this method to whitelist the permissible parameters. Example:
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.
     def order_params
-      params.require(:order).permit(:status, :user_id)
+      params.require(:order).permit(:status, :user_id, :address_id)
     end
 end
