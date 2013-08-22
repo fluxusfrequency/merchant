@@ -17,4 +17,4 @@
 
 
 <%= link_to 'Edit', edit_order_item_path(@order_item) %> |
-<%= link_to 'Back', order_items_path %>
+<%= link_to 'Back', order_url(session[:order_id]) %>

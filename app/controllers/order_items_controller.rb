@@ -1,5 +1,6 @@
 class OrderItemsController < ApplicationController
   before_filter :load_order, only: :create
+
   # GET /order_items
   # GET /order_items.json
   def index
@@ -30,8 +31,8 @@ class OrderItemsController < ApplicationController
   # POST /order_items
   # POST /order_items.json
   def create
-    @order_item = @order.order_items.new(quantity: 1, product_id: params[:product_id])
-
+    @order_item = @order.order_items.find_or_initialize_by_product_id(params[:product_id])
+    @order_item.increment(:quantity, by = 1)
     respond_to do |format|
       if @order_item.save
         format.html { redirect_to @order, notice: 'Order item was successfully created.' }
@@ -49,8 +50,11 @@ class OrderItemsController < ApplicationController
     @order_item = OrderItem.find(params[:id])
 
     respond_to do |format|
-      if @order_item.update_attributes(order_item_params)
-        format.html { redirect_to @order_item, notice: 'Order item was successfully updated.' }
+      if params[:order_item][:quantity].to_i == 0
+        @order_item.destroy
+        format.html {redirect_to order_url(session[:order_id]), notice: 'The item was deleted from your order.' }
+      elsif @order_item.update_attributes(order_item_params)
+        format.html { redirect_to order_url(session[:order_id]), notice: 'Order item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
