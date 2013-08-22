@@ -75,14 +75,8 @@ class OrderItemsController < ApplicationController
     end
   end
 
+
   private
-    def load_order
-        @order = Order.find_or_initialize_by_id(session[:order_id])
-          if @order.new_record?
-            @order.save!
-        session[:order_id] = @order.id
-      end
-    end
     # Use this method to whitelist the permissible parameters. Example:
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.

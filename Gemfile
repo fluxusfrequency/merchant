@@ -7,6 +7,7 @@ gem 'rails', '3.2.12'
 
 gem 'sqlite3'
 gem 'strong_parameters'
+gem 'omniauth-twitter'
 
 # Gems used only for assets and not required
 # in production environments by default.

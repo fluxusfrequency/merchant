@@ -1,5 +1,6 @@
 class Order < ActiveRecord::Base
-  attr_accessible :status, :user_id
+  attr_accessible :status, :user_id, :user
+  belongs_to :user
   has_many :order_items, dependent: :destroy
 
   def total
